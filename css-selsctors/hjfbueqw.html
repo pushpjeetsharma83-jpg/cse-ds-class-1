@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Do You Love Me?</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        overflow: hidden;
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #ff416c, #ff4b2b);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .box {
+        background: rgb(237, 234, 234);
+        padding: 40px;
+        border-radius: 25px;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        position: relative;
+        width: 360px;
+        height: 280px;
+    }
+
+    h1 {
+        color: #ff2e63;
+    }
+
+    .buttons {
+        margin-top: 40px;
+    }
+
+    button {
+        padding: 12px 30px;
+        font-size: 18px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        position: relative;
+        transition: 0.2s;
+    }
+
+    #yes {
+        background: #19d166;
+        color: white;
+    }
+
+    #no {
+        background: #d50000;
+        color: white;
+        position: absolute;
+    }
+
+    .message {
+        margin-top: 15px;
+        color: #ff1744;
+        font-weight: bold;
+    }
+
+    .success {
+        font-size: 24px;
+        color: #ff2e63;
+        margin-top: 20px;
+        animation: pop 0.5s ease;
+    }
+
+    @keyframes pop {
+        0% { transform: scale(0); }
+        100% { transform: scale(1); }
+    }
+
+    .heart {
+        position: fixed;
+        color: red;
+        font-size: 24px;
+        animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+        from {
+            transform: translateY(-10px);
+        }
+        to {
+            transform: translateY(100vh);
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="box" id="box">
+    <h1 id="question">Do you love me? 🥺</h1>
+
+    <div class="buttons">
+        <button id="yes">Yes 💖</button>
+        <button id="no">No 💔</button>
+    </div>
+
+    <div class="message" id="msg"></div>
+</div>
+
+<audio id="loveSound">
+    <source src="https://www.soundjay.com/buttons/sounds/button-3.mp3">
+</audio>
+
+<script>
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const box = document.getElementById("box");
+    const msg = document.getElementById("msg");
+    const question = document.getElementById("question");
+    const sound = document.getElementById("loveSound");
+
+    const teasingTexts = [
+    ];
+
+    function moveNoButton() {
+        const boxRect = box.getBoundingClientRect();
+        const btnRect = noBtn.getBoundingClientRect();
+
+        const maxX = boxRect.width - btnRect.width - 20;
+        const maxY = boxRect.height - btnRect.height - 20;
+
+        const randomX = Math.floor(Math.random() * maxX);
+        const randomY = Math.floor(Math.random() * maxY);
+
+        noBtn.style.left = randomX + "px";
+        noBtn.style.top = randomY + "px";
+
+        const randomMsg = teasingTexts[Math.floor(Math.random() * teasingTexts.length)];
+        msg.innerText = randomMsg;
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+
+    yesBtn.addEventListener("click", () => {
+        sound.play();
+        question.innerHTML = "YAAAY! I KNEW IT 😍💖";
+        box.innerHTML += <div class="success">I’ll protect this ‘Yes’ forever 🫶😂</div>;
+        startHearts();
+    });
+
+    function startHearts() {
+        setInterval(() => {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤";
+            heart.style.left = Math.random() * window.innerWidth + "px";
+            heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }, 200);
+    }
+</script>
+
+</body>
+</html>
